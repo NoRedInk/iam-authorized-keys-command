@@ -81,8 +81,7 @@ func main() {
 					if err != nil {
 						fmt.Fprintln(os.Stderr, err.Error())
 					}
-					fmt.Printf("# %s\n", *userName)
-					fmt.Println(*resp.SSHPublicKey.SSHPublicKeyBody)
+					fmt.Printf("%s %s\n", *userName, *resp.SSHPublicKey.SSHPublicKeyBody)
 				}
 			} else {
 				fmt.Fprintln(os.Stderr, err.Error())
