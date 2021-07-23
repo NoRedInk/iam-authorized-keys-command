@@ -3,6 +3,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"os"
 	"os/signal"
@@ -21,19 +22,24 @@ const (
 
 var (
 	wg sync.WaitGroup
-
-	iamGroup    = ""
-	sshUserName = ""
 )
 
 func main() {
+	var iamGroup string
+	flag.StringVar(&iamGroup, "iam-group", "", "Get SSH keys from this IAM group")
+	flag.Parse()
+	if iamGroup == "" {
+		fmt.Fprintf(os.Stderr, "missing required flag -iam-group")
+		os.Exit(1)
+	}
+
 	sess, _ := session.NewSession()
 	svc := iam.New(sess)
 
-	// check for valid user name
-	if sshUserName != "" && (len(os.Args) < 2 || os.Args[1] != sshUserName) {
-		os.Exit(exitCodeOk)
-	}
+	// // check for valid user name
+	// if sshUserName != "" && (len(os.Args) < 2 || os.Args[1] != sshUserName) {
+	// 	os.Exit(exitCodeOk)
+	// }
 
 	// Handle SIGPIPE
 	//
